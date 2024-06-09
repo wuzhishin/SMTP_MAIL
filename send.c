@@ -14,205 +14,6 @@
 
 char buf[MAX_SIZE+1];
 
-// const int CHARS_PER_LINE = 72;
-
-// #define SIZE 4096
-
-// typedef enum
-// {
-// 	step_A, step_B, step_C
-// } base64_encodestep;
-
-// typedef struct
-// {
-// 	base64_encodestep step;
-// 	char result;
-// 	int stepcount;
-// } base64_encodestate;
-
-// void base64_init_encodestate(base64_encodestate* state_in)
-// {
-// 	state_in->step = step_A;
-// 	state_in->result = 0;
-// 	state_in->stepcount = 0;
-// }
-
-// char base64_encode_value(char value_in)
-// {
-// 	static const char* encoding = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-// 	if (value_in > 63) return '=';
-// 	return encoding[(int)value_in];
-// }
-
-// int base64_encode_block(const char* plaintext_in, int length_in, char* code_out, base64_encodestate* state_in)
-// {
-// 	const char* plainchar = plaintext_in;
-// 	const char* const plaintextend = plaintext_in + length_in;
-// 	char* codechar = code_out;
-// 	char result;
-// 	char fragment;
-	
-// 	result = state_in->result;
-	
-// 	switch (state_in->step)
-// 	{
-// 		while (1)
-// 		{
-// 	case step_A:
-// 			if (plainchar == plaintextend)
-// 			{
-// 				state_in->result = result;
-// 				state_in->step = step_A;
-// 				return codechar - code_out;
-// 			}
-// 			fragment = *plainchar++;
-// 			result = (fragment & 0x0fc) >> 2;
-// 			*codechar++ = base64_encode_value(result);
-// 			result = (fragment & 0x003) << 4;
-// 	case step_B:
-// 			if (plainchar == plaintextend)
-// 			{
-// 				state_in->result = result;
-// 				state_in->step = step_B;
-// 				return codechar - code_out;
-// 			}
-// 			fragment = *plainchar++;
-// 			result |= (fragment & 0x0f0) >> 4;
-// 			*codechar++ = base64_encode_value(result);
-// 			result = (fragment & 0x00f) << 2;
-// 	case step_C:
-// 			if (plainchar == plaintextend)
-// 			{
-// 				state_in->result = result;
-// 				state_in->step = step_C;
-// 				return codechar - code_out;
-// 			}
-// 			fragment = *plainchar++;
-// 			result |= (fragment & 0x0c0) >> 6;
-// 			*codechar++ = base64_encode_value(result);
-// 			result  = (fragment & 0x03f) >> 0;
-// 			*codechar++ = base64_encode_value(result);
-			
-// 			++(state_in->stepcount);
-// 			if (state_in->stepcount == CHARS_PER_LINE/4)
-// 			{
-// 				*codechar++ = '\n';
-// 				state_in->stepcount = 0;
-// 			}
-// 		}
-// 	}
-// 	/* control should not reach here */
-// 	return codechar - code_out;
-// }
-
-// int base64_encode_blockend(char* code_out, base64_encodestate* state_in)
-// {
-// 	char* codechar = code_out;
-	
-// 	switch (state_in->step)
-// 	{
-// 	case step_B:
-// 		*codechar++ = base64_encode_value(state_in->result);
-// 		*codechar++ = '=';
-// 		*codechar++ = '=';
-// 		break;
-// 	case step_C:
-// 		*codechar++ = base64_encode_value(state_in->result);
-// 		*codechar++ = '=';
-// 		break;
-// 	case step_A:
-// 		break;
-// 	}
-// 	*codechar++ = '\n';
-	
-// 	return codechar - code_out;
-// }
-
-
-
-
-
-// void base64_init_encodestate(base64_encodestate* state_in);
-
-// char base64_encode_value(char value_in);
-
-// int base64_encode_block(const char* plaintext_in, int length_in, char* code_out, base64_encodestate* state_in);
-
-// int base64_encode_blockend(char* code_out, base64_encodestate* state_in);
-
-// char* encode_str(const char* input)
-// {
-//     /* length of input string */
-//     int len = strlen(input);
-//     /* set up a destination buffer large enough to hold the encoded data */
-//     char* output = (char*) malloc(len*2);
-//     /* keep track of our encoded position */
-//     char* c = output;
-//     /* store the number of bytes encoded by a single call */
-//     int cnt = 0;
-//     /* we need an encoder state */
-//     base64_encodestate s;
-
-//     /* String length should not be greater than 3,000 */
-//     if (len > 3000)
-//     {
-//         fprintf(stderr, "Input too long!\n");
-//         return NULL;
-//     }
-    
-//     /*---------- START ENCODING ----------*/
-//     /* initialize the encoder state */
-//     base64_init_encodestate(&s);
-//     /* gather data from the input and send it to the output */
-//     cnt = base64_encode_block(input, len, c, &s);
-//     c += cnt;
-//     /* since we have encoded the entire input string, we know that 
-//         there is no more input data; finalise the encoding */
-//     cnt = base64_encode_blockend(c, &s);
-//     c += cnt;
-//     /*---------- STOP ENCODING  ----------*/
-    
-//     /* we want to print the encoded data, so null-terminate it: */
-//     *c = 0;
-    
-//     return output;
-// }
-
-// void encode_file(FILE* inputFile, FILE* outputFile)
-// {
-//     /* set up a destination buffer large enough to hold the encoded data */
-//     int size = SIZE;
-//     char* input = (char*)malloc(size);
-//     char* encoded = (char*)malloc(2*size); /* ~4/3 x input */
-//     /* we need an encoder and decoder state */
-//     base64_encodestate es;
-//     /* store the number of bytes encoded by a single call */
-//     int cnt = 0;
-    
-//     /*---------- START ENCODING ----------*/
-//     /* initialise the encoder state */
-//     base64_init_encodestate(&es);
-//     /* gather data from the input and send it to the output */
-//     while (1)
-//     {
-//         cnt = fread(input, sizeof(char), size, inputFile);
-//         if (cnt == 0)
-//             break;
-//         cnt = base64_encode_block(input, cnt, encoded, &es);
-//         /* output the encoded bytes to the output file */
-//         fwrite(encoded, sizeof(char), cnt, outputFile);
-//     }
-//     /* since we have reached the end of the input file, we know that 
-//        there is no more input data; finalise the encoding */
-//     cnt = base64_encode_blockend(encoded, &es);
-//     /* write the last bytes to the output file */
-//     fwrite(encoded, sizeof(char), cnt, outputFile);
-//     /*---------- STOP ENCODING  ----------*/
-	
-//     free(encoded);
-//     free(input);
-// }
-
 
 // receiver: mail address of the recipient
 // subject: mail subject
@@ -223,9 +24,9 @@ void send_mail(const char* receiver, const char* subject, const char* msg, const
     const char* end_msg = "\r\n.\r\n";
     const char* host_name = "smtp.qq.com"; // TODO: Specify the mail server domain name
     const unsigned short port = 25; // SMTP server port
-    const char* user = "392744757@qq.com"; // TODO: Specify the user
-    const char* pass = "sjlglhyuqddibibd"; // TODO: Specify the password
-    const char* from = "392744757@qq.com"; // TODO: Specify the mail address of the sender
+    const char* user = ""; // TODO: Specify the user
+    const char* pass = ""; // TODO: Specify the password
+    const char* from = ""; // TODO: Specify the mail address of the sender
     char dest_ip[16]; // Mail server IP address
     int s_fd; // socket file descriptor
     struct hostent *host;
@@ -388,7 +189,7 @@ void send_mail(const char* receiver, const char* subject, const char* msg, const
         long file_size = ftell(msg_file);
         fseek(msg_file, 0, SEEK_SET);
 
-        char* content = malloc(file_size + 1); // +1 for null terminator
+        char* content = malloc(file_size + 1); 
         if (content == NULL) {
             perror("malloc");
             fclose(msg_file);
