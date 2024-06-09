@@ -6,7 +6,7 @@
 
 这里先给出用户A从QQ邮箱发送邮件到用户B 163邮箱的图示，然后对图示的过程进行详细的介绍：
 
-![../_images/%E9%82%AE%E4%BB%B6.PNG](C:\Users\10409\Desktop\assets\邮件.png)
+![../_images/%E9%82%AE%E4%BB%B6.PNG](assets/邮件.png)
 
 ### SMTP协议工作机制
 
